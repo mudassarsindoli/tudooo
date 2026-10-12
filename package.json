@@ -1,0 +1,138 @@
+{
+  "name": "todooo",
+  "displayName": "todooo",
+  "description": "Find and manage forgotten TODO, FIXME, HACK, and XXX comments in your workspace.",
+  "icon": "images/icon.png",
+  "version": "0.1.0",
+  "publisher": "mudassarsindoli",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/todooo.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "todo",
+    "fixme",
+    "hack",
+    "tracker",
+    "comments"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "todooo",
+          "title": "TODO Tracker",
+          "icon": "media/todooo.svg"
+        }
+      ]
+    },
+    "views": {
+      "todooo": [
+        {
+          "id": "todooo.tracker",
+          "name": "TODO Tracker",
+          "icon": "media/todooo.svg",
+          "contextualTitle": "TODO Tracker"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "todooo.tracker",
+        "contents": "No tracked comments yet.\n[Scan Workspace](command:todooo.scanWorkspace)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "todooo.refresh",
+        "title": "Refresh",
+        "category": "todooo",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "todooo.scanWorkspace",
+        "title": "Scan Workspace",
+        "category": "todooo",
+        "icon": "$(search)"
+      },
+      {
+        "command": "todooo.hideItem",
+        "title": "Clear/Hide resolved item",
+        "category": "todooo",
+        "icon": "$(close)"
+      },
+      {
+        "command": "todooo.filter",
+        "title": "Filter comments",
+        "category": "todooo",
+        "icon": "$(filter)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "todooo.refresh",
+          "when": "view == todooo.tracker",
+          "group": "navigation@1"
+        },
+        {
+          "command": "todooo.scanWorkspace",
+          "when": "view == todooo.tracker",
+          "group": "navigation@2"
+        },
+        {
+          "command": "todooo.filter",
+          "when": "view == todooo.tracker",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "todooo.hideItem",
+          "when": "view == todooo.tracker && viewItem == todoItem",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "todooo.hideItem",
+          "when": "view == todooo.tracker"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "todooo",
+      "properties": {
+        "todooo.maxFileSize": {
+          "type": "number",
+          "default": 1048576,
+          "description": "Skip files larger than this many bytes while scanning."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node --test out/parser.test.js out/age.test.js",
+    "package": "npx @vscode/vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}
