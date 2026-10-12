@@ -1,14 +1,14 @@
 {
-  "name": "todooo",
-  "displayName": "todooo",
+  "name": "tudooo",
+  "displayName": "tudooo",
   "description": "Find and manage forgotten TODO, FIXME, HACK, and XXX comments in your workspace.",
   "icon": "images/icon.png",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "publisher": "mudassarsindoli",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/todooo.git"
+    "url": "https://github.com/mudassarsindoli/tudooo.git"
   },
   "engines": {
     "vscode": "^1.85.0"
@@ -31,90 +31,90 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "todooo",
+          "id": "tudooo",
           "title": "TODO Tracker",
-          "icon": "media/todooo.svg"
+          "icon": "media/tudooo.svg"
         }
       ]
     },
     "views": {
-      "todooo": [
+      "tudooo": [
         {
-          "id": "todooo.tracker",
+          "id": "tudooo.tracker",
           "name": "TODO Tracker",
-          "icon": "media/todooo.svg",
+          "icon": "media/tudooo.svg",
           "contextualTitle": "TODO Tracker"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "todooo.tracker",
-        "contents": "No tracked comments yet.\n[Scan Workspace](command:todooo.scanWorkspace)"
+        "view": "tudooo.tracker",
+        "contents": "No tracked comments yet.\n[Scan Workspace](command:tudooo.scanWorkspace)"
       }
     ],
     "commands": [
       {
-        "command": "todooo.refresh",
+        "command": "tudooo.refresh",
         "title": "Refresh",
-        "category": "todooo",
+        "category": "tudooo",
         "icon": "$(refresh)"
       },
       {
-        "command": "todooo.scanWorkspace",
+        "command": "tudooo.scanWorkspace",
         "title": "Scan Workspace",
-        "category": "todooo",
+        "category": "tudooo",
         "icon": "$(search)"
       },
       {
-        "command": "todooo.hideItem",
+        "command": "tudooo.hideItem",
         "title": "Clear/Hide resolved item",
-        "category": "todooo",
+        "category": "tudooo",
         "icon": "$(close)"
       },
       {
-        "command": "todooo.filter",
+        "command": "tudooo.filter",
         "title": "Filter comments",
-        "category": "todooo",
+        "category": "tudooo",
         "icon": "$(filter)"
       }
     ],
     "menus": {
       "view/title": [
         {
-          "command": "todooo.refresh",
-          "when": "view == todooo.tracker",
+          "command": "tudooo.refresh",
+          "when": "view == tudooo.tracker",
           "group": "navigation@1"
         },
         {
-          "command": "todooo.scanWorkspace",
-          "when": "view == todooo.tracker",
+          "command": "tudooo.scanWorkspace",
+          "when": "view == tudooo.tracker",
           "group": "navigation@2"
         },
         {
-          "command": "todooo.filter",
-          "when": "view == todooo.tracker",
+          "command": "tudooo.filter",
+          "when": "view == tudooo.tracker",
           "group": "navigation@3"
         }
       ],
       "view/item/context": [
         {
-          "command": "todooo.hideItem",
-          "when": "view == todooo.tracker && viewItem == todoItem",
+          "command": "tudooo.hideItem",
+          "when": "view == tudooo.tracker && viewItem == todoItem",
           "group": "inline"
         }
       ],
       "commandPalette": [
         {
-          "command": "todooo.hideItem",
-          "when": "view == todooo.tracker"
+          "command": "tudooo.hideItem",
+          "when": "view == tudooo.tracker"
         }
       ]
     },
     "configuration": {
-      "title": "todooo",
+      "title": "tudooo",
       "properties": {
-        "todooo.maxFileSize": {
+        "tudooo.maxFileSize": {
           "type": "number",
           "default": 1048576,
           "description": "Skip files larger than this many bytes while scanning."

@@ -1,6 +1,6 @@
 import type * as vscode from "vscode";
 
-const STORAGE_KEY = "todooo.hiddenIds";
+const STORAGE_KEY = "tudooo.hiddenIds";
 
 export class HiddenStore {
   public constructor(private readonly context: vscode.ExtensionContext) {}

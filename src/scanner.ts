@@ -2,7 +2,13 @@ import * as vscode from "vscode";
 import { ageForLine, formatAge, getLineAges } from "./age";
 import { excludeGlob, isProbablyBinary, shouldSkipFileName } from "./ignore";
 import { itemId, parseComments } from "./parser";
-import type { CommentKind, FileGroup, ParsedComment, ScanResult, TodoItem } from "./types";
+import type {
+  CommentKind,
+  FileGroup,
+  ParsedComment,
+  ScanResult,
+  TodoItem,
+} from "./types";
 
 const DEFAULT_MAX_FILE_SIZE = 1_048_576;
 const PARSE_CONCURRENCY = 8;
@@ -16,17 +22,20 @@ interface ParsedFile {
   fallbackMs: number;
 }
 
-export async function scanWorkspace(hiddenIds: Set<string>): Promise<ScanResult> {
+export async function scanWorkspace(
+  hiddenIds: Set<string>,
+): Promise<ScanResult> {
   const folders = vscode.workspace.workspaceFolders;
   if (!folders || folders.length === 0) {
     return emptyResult();
   }
 
   const maxFileSize = vscode.workspace
-    .getConfiguration("todooo")
+    .getConfiguration("tudooo")
     .get<number>("maxFileSize", DEFAULT_MAX_FILE_SIZE);
 
-  const candidates: Array<{ uri: vscode.Uri; folder: vscode.WorkspaceFolder }> = [];
+  const candidates: Array<{ uri: vscode.Uri; folder: vscode.WorkspaceFolder }> =
+    [];
   for (const folder of folders) {
     const uris = await vscode.workspace.findFiles(
       new vscode.RelativePattern(folder, "**/*"),
@@ -111,13 +120,25 @@ async function parseFile(
   };
 }
 
-async function toGroup(file: ParsedFile, hiddenIds: Set<string>): Promise<FileGroup | undefined> {
-  const ages = await getLineAges(file.uri.fsPath, file.folder.uri.fsPath, file.fallbackMs);
+async function toGroup(
+  file: ParsedFile,
+  hiddenIds: Set<string>,
+): Promise<FileGroup | undefined> {
+  const ages = await getLineAges(
+    file.uri.fsPath,
+    file.folder.uri.fsPath,
+    file.fallbackMs,
+  );
   const now = Date.now();
   const items: TodoItem[] = [];
 
   for (const comment of file.comments) {
-    const id = itemId(file.uri.toString(), comment.line, comment.kind, comment.text);
+    const id = itemId(
+      file.uri.toString(),
+      comment.line,
+      comment.kind,
+      comment.text,
+    );
     if (hiddenIds.has(id)) {
       continue;
     }
@@ -159,13 +180,16 @@ async function mapPool<T>(
   }
 
   let index = 0;
-  const runners = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
-    while (index < items.length) {
-      const current = items[index];
-      index += 1;
-      await worker(current);
-    }
-  });
+  const runners = Array.from(
+    { length: Math.min(concurrency, items.length) },
+    async () => {
+      while (index < items.length) {
+        const current = items[index];
+        index += 1;
+        await worker(current);
+      }
+    },
+  );
   await Promise.all(runners);
 }
 

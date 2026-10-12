@@ -25,28 +25,43 @@ export function registerCommands(
   };
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("todooo.refresh", () => runScan("todooo: Refreshing")),
-    vscode.commands.registerCommand("todooo.scanWorkspace", () => runScan("todooo: Scanning workspace")),
-    vscode.commands.registerCommand("todooo.hideItem", async (node?: ItemNode) => {
-      const target =
-        node instanceof ItemNode
-          ? node
-          : treeView.selection.find((item): item is ItemNode => item instanceof ItemNode);
-      if (!target) {
-        vscode.window.showInformationMessage("Select a comment in TODO Tracker to hide it.");
-        return;
-      }
-      await provider.hideItem(target);
-      treeView.description = provider.summary();
-      treeView.badge = {
-        value: provider.visibleCount(),
-        tooltip: provider.summary(),
-      };
-    }),
-    vscode.commands.registerCommand("todooo.filter", async () => {
+    vscode.commands.registerCommand("tudooo.refresh", () =>
+      runScan("tudooo: Refreshing"),
+    ),
+    vscode.commands.registerCommand("tudooo.scanWorkspace", () =>
+      runScan("tudooo: Scanning workspace"),
+    ),
+    vscode.commands.registerCommand(
+      "tudooo.hideItem",
+      async (node?: ItemNode) => {
+        const target =
+          node instanceof ItemNode
+            ? node
+            : treeView.selection.find(
+                (item): item is ItemNode => item instanceof ItemNode,
+              );
+        if (!target) {
+          vscode.window.showInformationMessage(
+            "Select a comment in TODO Tracker to hide it.",
+          );
+          return;
+        }
+        await provider.hideItem(target);
+        treeView.description = provider.summary();
+        treeView.badge = {
+          value: provider.visibleCount(),
+          tooltip: provider.summary(),
+        };
+      },
+    ),
+    vscode.commands.registerCommand("tudooo.filter", async () => {
       const picked = await vscode.window.showQuickPick(
         [
-          { label: "All", description: "Show every tracked comment", filter: "ALL" as FilterKind },
+          {
+            label: "All",
+            description: "Show every tracked comment",
+            filter: "ALL" as FilterKind,
+          },
           ...COMMENT_KINDS.map((kind) => ({
             label: kind,
             description: `Show only ${kind} comments`,

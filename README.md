@@ -1,8 +1,8 @@
-# todooo
+# tudooo
 
 ### Find forgotten TODOs before they become permanent.
 
-**todooo** is a lightweight, local-first VS Code extension that finds `TODO`, `FIXME`, `HACK`, and `XXX` comments across your workspace and organizes them in one simple sidebar.
+**tudooo** is a lightweight, local-first VS Code extension that finds `TODO`, `FIXME`, `HACK`, and `XXX` comments across your workspace and organizes them in one simple sidebar.
 
 No AI. No accounts. No backend. Just a better way to keep track of unfinished work.
 
@@ -24,7 +24,7 @@ You move on to the next task. A week passes. Then a month.
 
 Those comments are still there.
 
-**todooo brings them back into view.**
+**tudooo brings them back into view.**
 
 ## Features
 
@@ -50,7 +50,7 @@ Those comments are still there.
 
 **2. Open the TODO Tracker sidebar.**
 
-todooo scans your workspace and groups matching comments by file.
+tudooo scans your workspace and groups matching comments by file.
 
 **3. Find what needs attention.**
 
@@ -93,7 +93,7 @@ _Illustrative example. Actual results depend on your workspace._
 Download the `.vsix` package from the project's GitHub Releases page, then run:
 
 ```bash
-code --install-extension todooo-0.1.0.vsix
+code --install-extension tudooo-0.1.0.vsix
 ```
 
 Alternatively, in VS Code, open **Extensions → `...` → Install from VSIX...** and select the downloaded file.
@@ -123,10 +123,10 @@ This produces a `.vsix` package if the packaging script and required tooling are
 
 | Command                            | Description              |
 | ---------------------------------- | ------------------------ |
-| `todooo: Refresh`                  | Refresh the comment list |
-| `todooo: Scan Workspace`           | Scan the workspace again |
-| `todooo: Clear/Hide resolved item` | Hide a selected item     |
-| `todooo: Filter comments`          | Filter by comment type   |
+| `tudooo: Refresh`                  | Refresh the comment list |
+| `tudooo: Scan Workspace`           | Scan the workspace again |
+| `tudooo: Clear/Hide resolved item` | Hide a selected item     |
+| `tudooo: Filter comments`          | Filter by comment type   |
 
 ## Privacy
 
@@ -144,7 +144,7 @@ Git history is read locally when available to estimate comment age.
 
 | Setting              |   Default | Description                                 |
 | -------------------- | --------: | ------------------------------------------- |
-| `todooo.maxFileSize` | `1048576` | Maximum file size to scan, in bytes (1 MB). |
+| `tudooo.maxFileSize` | `1048576` | Maximum file size to scan, in bytes (1 MB). |
 
 ## Limitations
 
@@ -180,4 +180,4 @@ MIT
 
 **Less forgotten work. Cleaner projects. One small extension.**
 
-If todooo helps you keep your codebase organized, give the repository a star.
+If tudooo helps you keep your codebase organized, give the repository a star.
