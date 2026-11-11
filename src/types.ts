@@ -9,6 +9,7 @@ export interface ParsedComment {
   text: string;
   line: number;
   column: number;
+  matchLength: number;
 }
 
 export interface TodoItem {

@@ -120,7 +120,49 @@
           "description": "Skip files larger than this many bytes while scanning."
         }
       }
-    }
+    },
+    "colors": [
+      {
+        "id": "tudooo.todoForeground",
+        "description": "Color used to highlight TODO comments.",
+        "defaults": {
+          "dark": "#FFD54A",
+          "light": "#8A6D00",
+          "highContrast": "#FFD54A",
+          "highContrastLight": "#6B5400"
+        }
+      },
+      {
+        "id": "tudooo.fixmeForeground",
+        "description": "Color used to highlight FIXME comments.",
+        "defaults": {
+          "dark": "#2DD4D4",
+          "light": "#00828F",
+          "highContrast": "#2DD4D4",
+          "highContrastLight": "#005B64"
+        }
+      },
+      {
+        "id": "tudooo.hackForeground",
+        "description": "Color used to highlight HACK comments.",
+        "defaults": {
+          "dark": "#4FA3FF",
+          "light": "#0B5FC9",
+          "highContrast": "#4FA3FF",
+          "highContrastLight": "#063C85"
+        }
+      },
+      {
+        "id": "tudooo.xxxForeground",
+        "description": "Color used to highlight XXX comments.",
+        "defaults": {
+          "dark": "#FF5C5C",
+          "light": "#C62828",
+          "highContrast": "#FF5C5C",
+          "highContrastLight": "#8E0000"
+        }
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

@@ -1,21 +1,57 @@
 import * as vscode from "vscode";
+import { DEPLOY_BLOCKING_KINDS, KIND_COLOR_IDS } from "./colors";
 import { HiddenStore } from "./hiddenStore";
 import { scanWorkspace } from "./scanner";
-import type { FilterKind, ScanResult, TodoItem } from "./types";
+import { COMMENT_KINDS, type CommentKind, type FilterKind, type ScanResult, type TodoItem } from "./types";
+
+function countByKind(items: readonly TodoItem[]): Record<CommentKind, number> {
+  const counts: Record<CommentKind, number> = { TODO: 0, FIXME: 0, HACK: 0, XXX: 0 };
+  for (const item of items) {
+    counts[item.kind] += 1;
+  }
+  return counts;
+}
+
+function formatCounts(counts: Record<CommentKind, number>, omitZero: boolean): string {
+  const kinds = omitZero ? COMMENT_KINDS.filter((kind) => counts[kind] > 0) : COMMENT_KINDS;
+  return kinds.map((kind) => `${kind} ${counts[kind]}`).join(" · ");
+}
+
+export class StatusNode extends vscode.TreeItem {
+  public constructor(result: ScanResult) {
+    const blockers = DEPLOY_BLOCKING_KINDS.reduce(
+      (sum, kind) => sum + result.counts[kind],
+      0,
+    );
+    const ready = blockers === 0;
+
+    super(ready ? "Good to deploy" : "Not ready to deploy", vscode.TreeItemCollapsibleState.None);
+    this.contextValue = "tudoooStatus";
+    this.description = formatCounts(result.counts, false);
+    this.tooltip = ready
+      ? "No outstanding FIXME or XXX comments."
+      : `${blockers} outstanding FIXME/XXX comment${blockers === 1 ? "" : "s"} blocking deploy.`;
+    this.iconPath = new vscode.ThemeIcon(
+      ready ? "pass-filled" : "error",
+      new vscode.ThemeColor(ready ? "charts.green" : "charts.red"),
+    );
+  }
+}
 
 export class FileNode extends vscode.TreeItem {
   public constructor(
     public readonly relativePath: string,
     public readonly fileUri: vscode.Uri,
     public readonly fileUriString: string,
-    count: number,
+    items: readonly TodoItem[],
   ) {
-    super(relativePath, vscode.TreeItemCollapsibleState.Expanded);
+    const fileName = relativePath.split(/[/\\]/).pop() ?? relativePath;
+    super(fileName, vscode.TreeItemCollapsibleState.Expanded);
     this.contextValue = "todoFile";
     this.resourceUri = fileUri;
-    this.description = String(count);
+    this.description = formatCounts(countByKind(items), true);
     this.iconPath = vscode.ThemeIcon.File;
-    this.tooltip = `${relativePath} (${count})`;
+    this.tooltip = `${relativePath}\n${formatCounts(countByKind(items), true)}`;
   }
 }
 
@@ -40,7 +76,7 @@ export class ItemNode extends vscode.TreeItem {
   }
 }
 
-export type TodoNode = FileNode | ItemNode;
+export type TodoNode = StatusNode | FileNode | ItemNode;
 
 export class TodoTreeProvider implements vscode.TreeDataProvider<TodoNode> {
   private readonly emitter = new vscode.EventEmitter<TodoNode | undefined>();
@@ -79,15 +115,18 @@ export class TodoTreeProvider implements vscode.TreeDataProvider<TodoNode> {
 
   public getChildren(element?: TodoNode): TodoNode[] {
     if (!element) {
-      return this.visibleGroups().map(
-        (group) =>
-          new FileNode(
-            group.relativePath,
-            vscode.Uri.parse(group.uri),
-            group.uri,
-            group.items.length,
-          ),
-      );
+      return [
+        new StatusNode(this.result),
+        ...this.visibleGroups().map(
+          (group) =>
+            new FileNode(
+              group.relativePath,
+              vscode.Uri.parse(group.uri),
+              group.uri,
+              group.items,
+            ),
+        ),
+      ];
     }
 
     if (element instanceof FileNode) {
@@ -164,14 +203,15 @@ export class TodoTreeProvider implements vscode.TreeDataProvider<TodoNode> {
 }
 
 function iconForKind(kind: TodoItem["kind"]): vscode.ThemeIcon {
+  const color = new vscode.ThemeColor(KIND_COLOR_IDS[kind]);
   switch (kind) {
     case "TODO":
-      return new vscode.ThemeIcon("checklist");
+      return new vscode.ThemeIcon("checklist", color);
     case "FIXME":
-      return new vscode.ThemeIcon("warning");
+      return new vscode.ThemeIcon("warning", color);
     case "HACK":
-      return new vscode.ThemeIcon("tools");
+      return new vscode.ThemeIcon("tools", color);
     case "XXX":
-      return new vscode.ThemeIcon("error");
+      return new vscode.ThemeIcon("error", color);
   }
 }

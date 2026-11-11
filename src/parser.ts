@@ -27,6 +27,7 @@ export function parseComments(source: string): ParsedComment[] {
       text,
       line: index + 1,
       column: match.index,
+      matchLength: match[0].length,
     });
   }
 

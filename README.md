@@ -30,7 +30,10 @@ Those comments are still there.
 
 - **Workspace scanning** — Find TODO comments across your project.
 - **Four comment types** — Track `TODO`, `FIXME`, `HACK`, and `XXX`.
-- **Native VS Code sidebar** — Browse comments grouped by file.
+- **Color-coded comments** — Each type is highlighted right in the editor (yellow `TODO`, aqua `FIXME`, blue `HACK`, red `XXX`), and the sidebar icons match.
+- **Native VS Code sidebar** — Browse comments grouped by file, shown by file name with the full path and a per-type breakdown on hover.
+- **Per-file breakdown** — Each file entry in the sidebar shows how many of each comment type it contains.
+- **Deploy-readiness status** — A status row at the top of the sidebar tells you at a glance whether you're good to deploy, based on outstanding `FIXME`/`XXX` comments.
 - **Jump to code** — Click any item to open the exact file and line.
 - **Age tracking** — See how long comments have been sitting around, using Git history when available.
 - **Quick filtering** — Focus on one type of comment at a time.
@@ -50,11 +53,11 @@ Those comments are still there.
 
 **2. Open the TODO Tracker sidebar.**
 
-tudooo scans your workspace and groups matching comments by file.
+tudooo scans your workspace and groups matching comments by file, with a status row at the top showing total counts per type and whether you're good to deploy.
 
 **3. Find what needs attention.**
 
-Review comment text, line numbers, and age. Filter by type to focus on the most important issues.
+Review comment text, line numbers, and age. Hover a file to see its full path and comment breakdown. Filter by type to focus on the most important issues.
 
 **4. Jump straight to the code.**
 
@@ -69,20 +72,19 @@ Fix the issue and hide the resolved item. Your source code remains untouched by 
 ```text
 TODO Tracker
 │
-├── 4 open items
+├── ⚠ Not ready to deploy      TODO 1 · FIXME 1 · HACK 1 · XXX 1
 │
-├── src/
-│   ├── payment.ts
-│   │   └── TODO   Add retry logic       · 2 days
-│   ├── auth.ts
-│   │   └── FIXME  Handle expired token  · 14 days
-│   └── legacy.ts
-│       └── HACK   Remove old API        · 47 days
-│
-└── tests/
-    └── user.test.ts
-        └── XXX    Add missing test      · 103 days
+├── payment.ts                 TODO 1
+│   └── TODO   Add retry logic       · 2 days
+├── auth.ts                     FIXME 1
+│   └── FIXME  Handle expired token  · 14 days
+├── legacy.ts                   HACK 1
+│   └── HACK   Remove old API        · 47 days
+└── user.test.ts                XXX 1
+    └── XXX    Add missing test      · 103 days
 ```
+
+Files are listed by name (hover one to see its full path and type breakdown); the status row at the top reflects the whole workspace, independent of any active filter.
 
 _Illustrative example. Actual results depend on your workspace._
 
@@ -118,6 +120,21 @@ npm run package
 ```
 
 This produces a `.vsix` package if the packaging script and required tooling are configured.
+
+## Color coding
+
+| Type    | Color  |
+| ------- | ------ |
+| `TODO`  | Yellow |
+| `FIXME` | Aqua   |
+| `HACK`  | Blue   |
+| `XXX`   | Red    |
+
+These colors highlight the keyword directly in the editor and tint the matching icon in the sidebar. Each color is a VS Code theme color (`tudooo.todoForeground`, `tudooo.fixmeForeground`, `tudooo.hackForeground`, `tudooo.xxxForeground`), so you can override it from your theme or `workbench.colorCustomizations`.
+
+## Deploy-readiness status
+
+The status row at the top of the sidebar flags the workspace as **"Good to deploy"** or **"Not ready to deploy"** based on outstanding `FIXME` and `XXX` comments — the two types that typically mark real bugs rather than nice-to-haves. `TODO` and `HACK` are shown for visibility but don't block the status.
 
 ## Commands
 
